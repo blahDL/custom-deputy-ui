@@ -1,4 +1,4 @@
-import 'angular';
+import angular from 'angular';
 import 'angular-bootstrap';
 
 // app.js
@@ -9,7 +9,7 @@ import 'angular-bootstrap';
 		'$http',
 		function($httpProvider) {
 			$httpProvider.defaults.headers.common.Authorization =
-				'OAuth <insert key here>';
+				'OAuth ' + process.env.DEPUTY_API_KEY;
 		}
 	]);
 })();
