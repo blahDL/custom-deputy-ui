@@ -20,7 +20,7 @@ module.exports = {
 		}
 	},
 	plugins: [
-		new InlineEnvironmentVariablesPlugin('DEPUTY_API_KEY'),
+		new InlineEnvironmentVariablesPlugin(['DEPUTY_API_KEY', 'DEPUTY_API_HOST']),
 		new CleanWebpackPlugin(['dist']),
 		new HtmlWebpackPlugin({
 			title: 'Deputy',

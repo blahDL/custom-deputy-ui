@@ -7,7 +7,7 @@ import angular from 'angular';
 
 	DataService.$inject = ['$http'];
 	function DataService($http) {
-		// const baseUrl = 'https://psba.au.deputy.com/api/v1';
+		//const baseUrl = `https://${process.env.DEPUTY_API_HOST}/api/v1`;
 		const baseUrl = '/api/v1';
 
 		this.locations = locations;
