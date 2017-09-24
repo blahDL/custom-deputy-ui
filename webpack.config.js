@@ -14,7 +14,7 @@ module.exports = {
 		contentBase: './dist',
 		proxy: {
 			'/api': {
-				target: 'https://psba.au.deputy.com',
+				target: 'https://' + process.env.DEPUTY_API_HOST,
 				changeOrigin: true
 			}
 		}
