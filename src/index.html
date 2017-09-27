@@ -12,25 +12,17 @@
 
 <body ng-app="Deputy" ng-controller="MainController as $ctrl">
 
-    <h1>Locations</h1>
-    <ul>
-        <li ng-repeat="location in $ctrl.locations" ng-bind="location.CompanyName"></li>
-    </ul>
-
-    <h1>Areas</h1>
-    <ul>
-        <li ng-repeat="area in $ctrl.areas" ng-bind="area.OperationalUnitName"></li>
-    </ul>
-
-    <h1>Employees</h1>
-    <ul>
-        <li ng-repeat="employee in $ctrl.employees" ng-bind="employee.DisplayName"></li>
-    </ul>
-
-    <h1>Roster</h1>
-    <ul>
-        <li ng-repeat="roster in $ctrl.rosters" ng-bind="roster.Date"></li>
-    </ul>
+    <div ng-repeat="roster in $ctrl.rosters | groupBy:'[OperationalUnit,Employee]'">
+        <h1 ng-if="$ctrl.showArea(roster)" ng-bind="roster[0]._DPMetaData.OperationalUnitInfo.OperationalUnitName"></h1>
+        <ul>
+            <li>
+                <h2 ng-bind="roster[0]._DPMetaData.EmployeeInfo.DisplayName"></h2>
+                <ul>
+                    <li ng-repeat="shift in roster">{{shift.StartTimeLocalized}} - {{shift.Comment}}</li>
+                </ul>
+            </li>
+        </ul>
+    </div>
 
 </body>
 

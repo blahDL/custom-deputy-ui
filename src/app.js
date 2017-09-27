@@ -1,10 +1,11 @@
 import angular from 'angular';
 import 'angular-bootstrap';
+import 'angular-filter';
 
 (function() {
 	'use strict';
 
-	angular.module('Deputy', []).run([
+	angular.module('Deputy', ['angular.filter']).run([
 		'$http',
 		function($httpProvider) {
 			$httpProvider.defaults.headers.common.Authorization =

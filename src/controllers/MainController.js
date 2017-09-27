@@ -5,40 +5,29 @@ import angular from 'angular';
 
 	angular.module('Deputy').controller('MainController', MainController);
 
-	MainController.$inject = ['$scope', 'DataService'];
-	function MainController($scope, DataService) {
+	MainController.$inject = ['DataService'];
+	function MainController(DataService) {
 		var vm = this;
-		// vm.areas = [];
+		vm.prevArea = null;
+		vm.showArea = showArea;
 
-		locations();
-		areas();
-		employees();
-		rosters();
+		rosters('2017-09-27', '2017-10-30');
 
 		////////////////
 
-		function locations() {
-			DataService.locations().then(function(response) {
-				vm.locations = response;
-			});
-		}
-
-		function areas() {
-			DataService.areas().then(function(response) {
-				vm.areas = response;
-			});
-		}
-
-		function employees() {
-			DataService.employees().then(function(response) {
-				vm.employees = response;
-			});
-		}
-
-		function rosters() {
-			DataService.rosters().then(function(response) {
+		function rosters(startDate, endDate) {
+			DataService.rosters(startDate, endDate).then(function(response) {
 				vm.rosters = response;
 			});
+		}
+
+		function showArea(roster) {
+			const result =
+				vm.prevArea !=
+				roster[0]._DPMetaData.OperationalUnitInfo.OperationalUnitName;
+			vm.prevArea =
+				roster[0]._DPMetaData.OperationalUnitInfo.OperationalUnitName;
+			return result;
 		}
 	}
 })();

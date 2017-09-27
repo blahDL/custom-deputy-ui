@@ -10,41 +10,57 @@ import angular from 'angular';
 		//const baseUrl = `https://${process.env.DEPUTY_API_HOST}/api/v1`;
 		const baseUrl = '/api/v1';
 
-		this.locations = locations;
-		this.areas = areas;
-		this.employees = employees;
 		this.rosters = rosters;
 
 		////////////////
 
-		function locations() {
-			return $http
-				.post(baseUrl + '/resource/Company/QUERY')
-				.then(function(response) {
-					return response.data;
-				});
+		function rosters(startDate, endDate) {
+			const request = {
+				search: {
+					employee: {
+						field: 'Employee',
+						data: 0,
+						type: 'ne'
+					}
+				},
+				sort: {
+					OperationalUnit: 'asc',
+					Employee: 'asc'
+				},
+				start: 0
+			};
+
+			if (startDate) {
+				request.search.startDate = {
+					field: 'Date',
+					data: startDate,
+					type: 'ge'
+				};
+			}
+
+			if (endDate) {
+				request.search.endDate = {
+					field: 'Date',
+					data: endDate,
+					type: 'le'
+				};
+			}
+
+			return recursiveCall(baseUrl + '/resource/Roster/QUERY', request);
 		}
 
-		function areas() {
+		function recursiveCall(endpoint, request) {
 			return $http
-				.post(baseUrl + '/resource/OperationalUnit/QUERY')
+				.post(baseUrl + '/resource/Roster/QUERY', request)
 				.then(function(response) {
-					return response.data;
-				});
-		}
-
-		function employees() {
-			return $http
-				.post(baseUrl + '/resource/Employee/QUERY')
-				.then(function(response) {
-					return response.data;
-				});
-		}
-
-		function rosters() {
-			return $http
-				.post(baseUrl + '/resource/Roster/QUERY')
-				.then(function(response) {
+					if (Array.isArray(response.data) && response.data.length === 500) {
+						request.start = request.start + 500;
+						return recursiveCall(endpoint, request).then(function(
+							recursiveResponse
+						) {
+							return response.data.concat(recursiveResponse);
+						});
+					}
 					return response.data;
 				});
 		}
