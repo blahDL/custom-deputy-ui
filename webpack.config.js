@@ -12,7 +12,7 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
 	entry: {
 		lib: './src/lib.js',
-		script: './src/index.js',
+		app: './src/app.js',
 		style: './src/style.scss'
 	},
 	output: {
@@ -47,10 +47,10 @@ module.exports = {
 				test: /\.(woff2?|eot|[ot]tf|svg)$/,
 				use: ['file-loader']
 			},
-			// {
-			// 	test: /\.css$/,
-			// 	use: ['style-loader', 'css-loader']
-			// },
+			{
+				test: /\.glob$/,
+				use: ['glob-loader']
+			},
 			{
 				test: /\.s[ac]ss$/,
 				use: extractSass.extract({

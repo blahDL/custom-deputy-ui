@@ -24,6 +24,7 @@
 		"eslint": "^4.7.2",
 		"extract-text-webpack-plugin": "^3.0.1",
 		"file-loader": "^1.1.4",
+		"glob-loader": "^0.3.0",
 		"html-webpack-plugin": "^2.30.1",
 		"inline-environment-variables-webpack-plugin": "^1.2.1",
 		"node-sass": "^4.5.3",

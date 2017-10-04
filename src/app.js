@@ -11,3 +11,6 @@ import angular from 'angular';
 		}
 	]);
 })();
+
+// Load the rest of the app files via pattern matching
+require('./app.glob');
