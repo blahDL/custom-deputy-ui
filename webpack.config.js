@@ -2,6 +2,11 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const InlineEnvironmentVariablesPlugin = require('inline-environment-variables-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+
+const extractLess = new ExtractTextPlugin({
+	filename: 'style.css'
+});
 
 module.exports = {
 	entry: './src/index.js',
@@ -25,6 +30,34 @@ module.exports = {
 		new HtmlWebpackPlugin({
 			title: 'Deputy',
 			template: './src/index.html'
-		})
-	]
+		}),
+		extractLess
+	],
+	module: {
+		rules: [
+			{
+				test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+				use: ['file-loader']
+			},
+			{
+				test: /\.css$/,
+				use: ['style-loader', 'css-loader']
+			},
+			{
+				test: /\.less$/,
+				use: extractLess.extract({
+					use: [
+						{
+							loader: 'css-loader'
+						},
+						{
+							loader: 'less-loader'
+						}
+					],
+					// use style-loader in development
+					fallback: 'style-loader'
+				})
+			}
+		]
+	}
 };
