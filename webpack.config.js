@@ -4,7 +4,7 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const InlineEnvironmentVariablesPlugin = require('inline-environment-variables-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-const extractLess = new ExtractTextPlugin({
+const extractSass = new ExtractTextPlugin({
 	filename: 'style.css'
 });
 
@@ -31,7 +31,7 @@ module.exports = {
 			title: 'Deputy',
 			template: './src/index.html'
 		}),
-		extractLess
+		extractSass
 	],
 	module: {
 		rules: [
@@ -44,14 +44,14 @@ module.exports = {
 				use: ['style-loader', 'css-loader']
 			},
 			{
-				test: /\.less$/,
-				use: extractLess.extract({
+				test: /\.scss$/,
+				use: extractSass.extract({
 					use: [
 						{
 							loader: 'css-loader'
 						},
 						{
-							loader: 'less-loader'
+							loader: 'sass-loader'
 						}
 					],
 					// use style-loader in development

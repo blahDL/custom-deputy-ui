@@ -5,7 +5,7 @@ import 'angular-sanitize';
 import 'angular-filter';
 
 // import styles
-import './style.less';
+import './style.scss';
 
 // import application files
 import './app.js';
