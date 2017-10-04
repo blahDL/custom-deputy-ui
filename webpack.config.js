@@ -3,15 +3,20 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const InlineEnvironmentVariablesPlugin = require('inline-environment-variables-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const CommonChunksPlugin = require('webpack').optimize.CommonsChunkPlugin;
 
 const extractSass = new ExtractTextPlugin({
-	filename: 'style.css'
+	filename: '[name].css'
 });
 
 module.exports = {
-	entry: './src/index.js',
+	entry: {
+		lib: './src/lib.js',
+		script: './src/index.js',
+		style: './src/style.scss'
+	},
 	output: {
-		filename: 'bundle.js',
+		filename: '[name].js',
 		path: path.resolve(__dirname, 'dist')
 	},
 	devtool: 'inline-source-map',
@@ -31,20 +36,23 @@ module.exports = {
 			title: 'Deputy',
 			template: './src/index.html'
 		}),
+		new CommonChunksPlugin({
+			name: 'lib'
+		}),
 		extractSass
 	],
 	module: {
 		rules: [
 			{
-				test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+				test: /\.(woff2?|eot|[ot]tf|svg)$/,
 				use: ['file-loader']
 			},
+			// {
+			// 	test: /\.css$/,
+			// 	use: ['style-loader', 'css-loader']
+			// },
 			{
-				test: /\.css$/,
-				use: ['style-loader', 'css-loader']
-			},
-			{
-				test: /\.scss$/,
+				test: /\.s[ac]ss$/,
 				use: extractSass.extract({
 					use: [
 						{
@@ -54,7 +62,6 @@ module.exports = {
 							loader: 'sass-loader'
 						}
 					],
-					// use style-loader in development
 					fallback: 'style-loader'
 				})
 			}
