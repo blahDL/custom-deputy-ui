@@ -12,17 +12,16 @@ const moment = extendMoment(Moment);
 	MainController.$inject = ['DataService'];
 	function MainController(DataService) {
 		var vm = this;
+		vm.loading = false;
 
 		vm.momentFormat = 'YYYY-MM-DD';
 
 		vm.showHead = showHead;
 		vm.showFoot = showFoot;
 
-		vm.startDate = moment().toDate();
-		vm.endDate = moment()
-			.add(4, 'weeks')
-			.toDate();
 		vm.updateEndDate = updateEndDate;
+		vm.startDate = moment().toDate();
+		updateEndDate();
 
 		vm.readRosters = readRosters;
 		vm.dateRange = [];
@@ -41,16 +40,20 @@ const moment = extendMoment(Moment);
 			});
 		}
 
-		function readRosters(startDate, endDate) {
+		function readRosters() {
+			vm.rosters = null;
 			vm.previousOperationalUnit = null;
 			vm.currentOperationalUnit = null;
 			vm.dateRange = Array.from(
 				moment.range(vm.startDate, vm.endDate).by('day')
 			);
-			startDate = moment(startDate).format(vm.momentFormat);
-			endDate = moment(endDate).format(vm.momentFormat);
+
+			const startDate = moment(vm.startDate).format(vm.momentFormat);
+			const endDate = moment(vm.endDate).format(vm.momentFormat);
+			vm.loading = true;
 			DataService.rosters(startDate, endDate).then(function(response) {
 				vm.rosters = response;
+				vm.loading = false;
 			});
 		}
 

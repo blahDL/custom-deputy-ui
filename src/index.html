@@ -15,7 +15,7 @@
     <div class="form-inline text-center">
         <div class="form-group">
             <label for="startDate" class="control-label">Start Date</label>
-            <input type="date" class="form-control " id="startDate" placeholder="Start Date" ng-model="$ctrl.startDate" required ng-change="$ctrl.updateEndDate()">
+            <input type="date" class="form-control " id="startDate" placeholder="Start Date" ng-model="$ctrl.startDate" required ng-blur="$ctrl.updateEndDate()">
         </div>
 
         <div class="form-group">
@@ -24,34 +24,34 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-primary" ng-click="$ctrl.readRosters($ctrl.startDate, $ctrl.endDate)">View Roster</button>
+            <button type="submit" class="btn btn-primary" ng-click="$ctrl.readRosters()" ng-disabled="$ctrl.loading">View Roster</button>
         </div>
     </div>
 
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
-            <tfoot ng-if="$ctrl.showFoot(roster)" ng-repeat-start="roster in $ctrl.rosters | groupBy:'[OperationalUnit,Employee]'">
+            <tfoot ng-if="$ctrl.showFoot(roster)" ng-repeat-start="roster in $ctrl.rosters | groupBy:'[OperationalUnit,Employee]' track by $index">
                 <tr>
                     <th>Day Shifts</th>
-                    <th ng-repeat="date in $ctrl.dateRange" ng-bind-html="$ctrl.totalForDate(date, 'day', roster)"></th>
+                    <th ng-repeat="date in $ctrl.dateRange track by $index" ng-bind-html="::$ctrl.totalForDate(date, 'day', roster)" ng-class="{'danger':$ctrl.totalForDate(date, 'day', roster) === 0}"></th>
                 </tr>
                 <tr>
                     <th>Night Shifts</th>
-                    <th ng-repeat="date in $ctrl.dateRange" ng-bind-html="$ctrl.totalForDate(date, 'night', roster)"></th>
+                    <th ng-repeat="date in $ctrl.dateRange track by $index" ng-bind-html="::$ctrl.totalForDate(date, 'night', roster)" ng-class="{'danger':$ctrl.totalForDate(date, 'night', roster) === 0}"></th>
                 </tr>
             </tfoot>
             <thead ng-if="$ctrl.showHead(roster)">
                 <tr class="bg-primary">
-                    <th ng-bind="roster[0]._DPMetaData.OperationalUnitInfo.OperationalUnitName"></th>
-                    <th ng-repeat="date in $ctrl.dateRange" ng-bind-html="date.format('DD MMM<br/>ddd')"></th>
+                    <th ng-bind="::roster[0]._DPMetaData.OperationalUnitInfo.OperationalUnitName"></th>
+                    <th ng-repeat="date in $ctrl.dateRange track by $index" ng-bind-html="::date.format('DD MMM<br/>ddd')"></th>
                     <th>Number of shifts</th>
                 </tr>
             </thead>
             <tbody ng-repeat-end>
                 <tr>
-                    <th ng-bind="roster[0]._DPMetaData.EmployeeInfo.DisplayName"></th>
-                    <td ng-repeat="shift in $ctrl.shiftRange(roster) track by $index" ng-bind="shift.Comment" ng-class="$ctrl.shiftClass(shift)"></td>
-                    <th ng-bind="roster.length"></th>
+                    <th ng-bind="::roster[0]._DPMetaData.EmployeeInfo.DisplayName"></th>
+                    <td ng-repeat="shift in $ctrl.shiftRange(roster) track by $index" ng-bind="::shift.Comment" ng-class="::$ctrl.shiftClass(shift)"></td>
+                    <th ng-bind="::roster.length"></th>
                 </tr>
             </tbody>
 

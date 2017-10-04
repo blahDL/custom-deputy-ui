@@ -1,7 +1,4 @@
-$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
-
-@import '~bootstrap-sass/assets/stylesheets/bootstrap';
-
+// These styles are missing from angular for some reason
 [ng\:cloak],
 [ng-cloak],
 [data-ng-cloak],
@@ -10,3 +7,8 @@ $icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
 .x-ng-cloak {
 	display: none !important;
 }
+
+// This fixes the fonts for webpack
+$icon-font-path: '~bootstrap-sass/assets/fonts/bootstrap/';
+// Import bootstrap last so that any custom variables are used
+@import '~bootstrap-sass/assets/stylesheets/bootstrap';
