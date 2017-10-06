@@ -50,7 +50,7 @@
             <tbody ng-repeat-end>
                 <tr>
                     <th ng-bind="::roster[0]._DPMetaData.EmployeeInfo.DisplayName"></th>
-                    <td ng-repeat="shift in $ctrl.shiftRange(roster) track by $index" ng-bind="::shift.Comment" ng-class="::$ctrl.shiftClass(shift)"></td>
+                    <td ng-repeat="shift in $ctrl.shiftRange(roster) track by $index" ng-bind="::$ctrl.shiftText(shift)" ng-class="::$ctrl.shiftClass(shift)"></td>
                     <th ng-bind="::roster.length"></th>
                 </tr>
             </tbody>

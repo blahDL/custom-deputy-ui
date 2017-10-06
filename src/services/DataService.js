@@ -11,8 +11,48 @@ import angular from 'angular';
 		const baseUrl = '/api/v1';
 
 		this.rosters = rosters;
+		this.leave = leave;
 
 		////////////////
+
+		function leave(startDate, endDate) {
+			const request = {
+				search: {
+					awaitingApproval: {
+						field: 'Status',
+						data: 0,
+						type: 'ge'
+					},
+					approved: {
+						field: 'Status',
+						data: 1,
+						type: 'le'
+					}
+				},
+				sort: {
+					Employee: 'asc'
+				},
+				start: 0
+			};
+
+			if (startDate) {
+				request.search.startDate = {
+					field: 'DateEnd',
+					data: startDate,
+					type: 'ge'
+				};
+			}
+
+			if (endDate) {
+				request.search.endDate = {
+					field: 'DateStart',
+					data: endDate,
+					type: 'le'
+				};
+			}
+
+			return recursiveCall(baseUrl + '/resource/Leave/QUERY', request);
+		}
 
 		function rosters(startDate, endDate) {
 			const request = {
@@ -50,19 +90,17 @@ import angular from 'angular';
 		}
 
 		function recursiveCall(endpoint, request) {
-			return $http
-				.post(baseUrl + '/resource/Roster/QUERY', request)
-				.then(function(response) {
-					if (Array.isArray(response.data) && response.data.length === 500) {
-						request.start = request.start + 500;
-						return recursiveCall(endpoint, request).then(function(
-							recursiveResponse
-						) {
-							return response.data.concat(recursiveResponse);
-						});
-					}
-					return response.data;
-				});
+			return $http.post(endpoint, request).then(function(response) {
+				if (Array.isArray(response.data) && response.data.length === 500) {
+					request.start = request.start + 500;
+					return recursiveCall(endpoint, request).then(function(
+						recursiveResponse
+					) {
+						return response.data.concat(recursiveResponse);
+					});
+				}
+				return response.data;
+			});
 		}
 	}
 })();
