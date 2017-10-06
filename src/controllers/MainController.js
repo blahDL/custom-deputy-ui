@@ -19,8 +19,19 @@ const moment = extendMoment(Moment);
 		vm.showHead = showHead;
 		vm.showFoot = showFoot;
 
+		vm.startDates = [];
+
+		let startYear = 2017;
+		let startWeek = 1;
+		let currentDate = moment(`${startYear}-6-${startWeek}`, 'gggg-e-w');
+		do {
+			vm.startDates.push(currentDate.format(vm.momentFormat));
+			currentDate = currentDate.add(4, 'weeks');
+		} while (vm.startDates.length < 20);
+		vm.endDates = [...vm.startDates, currentDate.format(vm.momentFormat)];
+
+		vm.startDate = vm.startDates[0];
 		vm.updateEndDate = updateEndDate;
-		vm.startDate = moment().toDate();
 		updateEndDate();
 
 		vm.readRosters = readRosters;
@@ -30,6 +41,7 @@ const moment = extendMoment(Moment);
 		vm.totalForDate = totalForDate;
 		vm.shiftText = shiftText;
 		vm.shiftClass = shiftClass;
+		vm.totalHours = totalHours;
 
 		////////////////
 
@@ -50,6 +62,7 @@ const moment = extendMoment(Moment);
 		}
 
 		function readRosters() {
+			vm.loading = true;
 			vm.rosters = null;
 			vm.leave = null;
 			vm.previousOperationalUnit = null;
@@ -58,14 +71,10 @@ const moment = extendMoment(Moment);
 				moment.range(vm.startDate, vm.endDate).by('day')
 			);
 
-			const startDate = moment(vm.startDate).format(vm.momentFormat);
-			const endDate = moment(vm.endDate).format(vm.momentFormat);
-			vm.loading = true;
-
 			$q
 				.all({
-					rosters: DataService.rosters(startDate, endDate),
-					leave: DataService.leave(startDate, endDate)
+					rosters: DataService.rosters(vm.startDate, vm.endDate),
+					leave: DataService.leave(vm.startDate, vm.endDate)
 				})
 				.then(function(response) {
 					vm.rosters = response.rosters;
@@ -110,7 +119,7 @@ const moment = extendMoment(Moment);
 				return 'LEAVE';
 			}
 
-			return shift.Comment;
+			return moment(shift.StartTimeLocalized).hour() <= 12 ? 'Day' : 'Night';
 		}
 
 		function shiftClass(shift) {
@@ -131,7 +140,15 @@ const moment = extendMoment(Moment);
 		function updateEndDate() {
 			vm.endDate = moment(vm.startDate)
 				.add(4, 'weeks')
-				.toDate();
+				.format(vm.momentFormat);
+		}
+
+		function totalHours(roster) {
+			return roster
+				.reduce(function(sum, current) {
+					return sum + current.TotalTime;
+				}, 0)
+				.toFixed(2);
 		}
 	}
 })();
