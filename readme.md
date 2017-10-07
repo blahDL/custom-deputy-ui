@@ -9,6 +9,10 @@ Name | Value
 DEPUTY_API_HOST | The hostname for your API requests e.g. `subdomain.deputy.com`
 DEPUTY_API_KEY | The [Permanent Token](https://www.deputy.com/api-doc/API/Authentication#page_Permanent_Token) for accessing the Deputy API
 
+The following software is assumed to be installed and configured:
+* [Git](https://www.git-scm.com/)
+* [Node.js](https://nodejs.org/)
+
 ## Getting started
 
 1. Clone the repository
@@ -19,11 +23,14 @@ git clone https://github.com/blahDL/custom-deputy-ui.git
 ```
 npm install
 ```
-3. Run the web server
+
+## Running the site
+
+Run the web server
 ```
 npm start
 ```
-4. Browse to http://localhost:8080/ in your web browser
+Browse to http://localhost:8080/ in your web browser
 
 ## Installing the windows service
 
@@ -31,13 +38,19 @@ The service will be called `Deputy Custom UI` and can be maintained through Comp
 ```
 npm run service install
 ```
+_Click `Yes` to all the prompts to complete the installation process_
+
+Browse to http://localhost:8080/ in your web browser
+
+Log files for the server can be found in `service/daemon/`
 
 ## Uninstalling the windows service
 
-After installing the windows service following the steps above it can be uninstalled by running the following command
+After installing the windows service, it can be uninstalled by running the following command
 ```
 npm run service uninstall
 ```
+_Click `Yes` to all the prompts to complete the uninstal process_
 
 ## Note
 
