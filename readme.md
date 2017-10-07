@@ -3,6 +3,7 @@
 ## Prerequisites
 
 The following environment variables are required for operation of the site:
+
 Name | Value
 ---- | -----
 DEPUTY_API_HOST | The hostname for your API requests e.g. `subdomain.deputy.com`
