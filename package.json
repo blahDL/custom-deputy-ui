@@ -4,7 +4,8 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"start": "webpack-dev-server --color"
+		"start": "webpack-dev-server --color",
+		"service": "node ./service/index.js"
 	},
 	"author": "",
 	"license": "ISC",
@@ -16,7 +17,8 @@
 		"bootstrap-sass": "^3.3.7",
 		"lodash-es": "^4.17.4",
 		"moment": "^2.18.1",
-		"moment-range": "^3.0.3"
+		"moment-range": "^3.0.3",
+		"node-windows": "^0.1.14"
 	},
 	"devDependencies": {
 		"clean-webpack-plugin": "^0.1.16",

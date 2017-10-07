@@ -11,9 +11,9 @@ const extractSass = new ExtractTextPlugin({
 
 module.exports = {
 	entry: {
-		lib: './src/lib.js',
-		app: './src/app.js',
-		style: './src/style.scss'
+		lib: path.resolve(__dirname, 'src/lib.js'),
+		app: path.resolve(__dirname, 'src/app.js'),
+		style: path.resolve(__dirname, 'src/style.scss')
 	},
 	output: {
 		filename: '[name].js',
@@ -21,7 +21,9 @@ module.exports = {
 	},
 	devtool: 'inline-source-map',
 	devServer: {
-		contentBase: './dist',
+		host: '0.0.0.0',
+		port: 8080,
+		contentBase: path.resolve(__dirname, 'dist'),
 		proxy: {
 			'/api': {
 				target: 'https://' + process.env.DEPUTY_API_HOST,
