@@ -47,7 +47,7 @@ import angular from 'angular';
 				request.search.endDate = {
 					field: 'DateStart',
 					data: endDate,
-					type: 'le'
+					type: 'lt'
 				};
 			}
 
@@ -82,7 +82,7 @@ import angular from 'angular';
 				request.search.endDate = {
 					field: 'Date',
 					data: endDate,
-					type: 'le'
+					type: 'lt'
 				};
 			}
 
